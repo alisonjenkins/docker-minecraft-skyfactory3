@@ -1,0 +1,27 @@
+[Unit]
+Description=Minecraft Server for Skyfactory 3 pack.
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/docker run --rm --user="minecraft:minecraft" --name skyfactory3 -e MCMEM="4000" -p 25566:25565 \
+          -v /srv/minecraft/skyfactory3/world:/srv/minecraft/world \
+          -v /srv/minecraft/skyfactory3/banned-ips.json:/srv/minecraft/banned-ips.json \
+          -v /srv/minecraft/skyfactory3/banned-players.json:/srv/minecraft/banned-players.json \
+          -v /srv/minecraft/skyfactory3/logs:/srv/minecraft/logs \
+          -v /srv/minecraft/skyfactory3/crash-reports:/srv/minecraft/crash-reports \
+          -v /srv/minecraft/skyfactory3/ops.json:/srv/minecraft/ops.json \
+          -v /srv/minecraft/skyfactory3/usercache.json:/srv/minecraft/usercache.json \
+          -v /srv/minecraft/skyfactory3/whitelist.json:/srv/minecraft/whitelist.json \
+          -v /srv/minecraft/skyfactory3/server.properties:/srv/minecraft/server.properties \
+          -v /srv/minecraft/skyfactory3/config/JourneyMapServer:/srv/minecraft/config/JourneyMapServer \
+          -v /srv/minecraft/skyfactory3/backups:/srv/minecraft/backups \
+          -v /srv/minecraft/skyfactory3/mods.override:/srv/minecraft/mods.override \
+          -v /srv/minecraft/skyfactory3/config.override:/srv/minecraft/config.override \
+          demon012/minecraft-skyfactory3:latest
+ExecStop=/usr/bin/docker exec skyfactory3 /usr/bin/mcrcon -H localhost -p pass stop
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
