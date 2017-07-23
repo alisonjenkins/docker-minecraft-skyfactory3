@@ -6,7 +6,6 @@ ENV MCUID=995
 ENV MCGID=994
 
 ADD get_pack.py /usr/bin/get_pack
-ADD start_mc.sh /usr/bin/start_mc
 RUN apk --no-cache add gcc && \
     apk --no-cache add python && \
     apk --no-cache add git && \
@@ -28,9 +27,10 @@ RUN apk --no-cache add gcc && \
     echo 'eula=true' > /srv/minecraft/eula.txt && \
     cd /srv/minecraft/ && \
     sh ./FTBInstall.sh && \
-    chmod +x /usr/bin/start_mc && \
     apk del --purge git gcc musl-dev && \
     apk del ca-certificates wget python
+ADD start_mc.sh /usr/bin/start_mc
+RUN chmod +x /usr/bin/start_mc
 
 VOLUME /srv/minecraft/world
 VOLUME /srv/minecraft/config.override
