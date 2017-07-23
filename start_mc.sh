@@ -48,8 +48,10 @@ run_command "addgroup -g $MCGID minecraft"
 run_command "adduser -h /srv/minecraft -S -u $MCUID -G minecraft minecraft"
 run_command "chown -R minecraft:minecraft /srv/minecraft"
 
-# run_command "cp -R /srv/minecraft/config.override/* /srv/minecraft/config/"
-# run_command "cp -R /srv/minecraft/mods.override/* /srv/minecraft/mods/"
+set +e
+run_command "cp -R /srv/minecraft/config.override/* /srv/minecraft/config/"
+run_command "cp -R /srv/minecraft/mods.override/* /srv/minecraft/mods/"
+set -e
 
 run_command "echo "${VAR}" > /srv/minecraft/server.properties"
 
