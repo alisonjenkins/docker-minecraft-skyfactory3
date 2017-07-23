@@ -5,7 +5,6 @@ ENV MCMEM=4000
 ENV MCUID=995
 ENV MCGID=994
 
-ADD get_pack.py /usr/bin/get_pack
 RUN apk --no-cache add gcc python git musl-dev ca-certificates wget && \
     update-ca-certificates && \
     cd /tmp/ && \
@@ -14,6 +13,8 @@ RUN apk --no-cache add gcc python git musl-dev ca-certificates wget && \
     gcc -std=gnu11 -pedantic -Wall -Wextra -O2 -s -o mcrcon mcrcon.c && \
     cp mcrcon /usr/bin/mcrcon && \
     rm -Rf /tmp/mcrcon
+
+ADD get_pack.py /usr/bin/get_pack
 RUN mkdir -p /srv/minecraft && \
     cd /srv/minecraft/ && \
     /usr/bin/get_pack skyfactory3 && \
@@ -23,6 +24,7 @@ RUN mkdir -p /srv/minecraft && \
     cd /srv/minecraft/ && \
     sh ./FTBInstall.sh && \
     apk del --purge git gcc musl-dev ca-certificates wget python
+
 ADD start_mc.sh /usr/bin/start_mc
 RUN chmod +x /usr/bin/start_mc
 
